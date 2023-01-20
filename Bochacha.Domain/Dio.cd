@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Bochacha.Domain.Building">
+    <Position X="8.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAACAAIEAAAACAAAAAAAAgA=</HashCode>
+      <FileName>Building.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Rooms" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Bochacha.Domain.Equipment">
+    <Position X="6.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAFAAAAAAAAAAAAAhA=</HashCode>
+      <FileName>Equipment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Room" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Bochacha.Domain.Request">
+    <Position X="3.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEQAAAAAAAAAAAAAAAAAAAgAAAABAAEAAAAAAQAAAgA=</HashCode>
+      <FileName>Request.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="USER" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Bochacha.Domain.Room">
+    <Position X="1" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAABAAAAIgYAAAAAIIAAgAgAQBIAEACACAAAAAAgA=</HashCode>
+      <FileName>Room.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Building" />
+      <Property Name="USER" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Equipmenti" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Bochacha.Domain.USER">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAACAIABAAAAAAAEEBAAAgA=</HashCode>
+      <FileName>USER.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Requests" />
+      <Property Name="Rooms" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,53 @@
+﻿@page "/ueue"
+
+@using System.Net.Http
+@inject HttpClient Http
+@using System.Net.Http.Json
+@using System.Threading.Tasks
+@using Bochacha.Domain
+
+<h3>ListUser</h3>
+<p>@MessageAdd</p>
+
+@if (fulfil && persons == null)
+{
+    <p>Пользователи отсутствуют.</p>
+}
+else if (!fulfil && persons == null)
+{
+    <p>Идет загрузка...</p>
+}
+
+@if (persons != null)
+{
+    <ul>
+        @foreach (var person in persons)
+        {
+            <li>@person.id</li>
+        }
+    </ul>
+}
+
+@code {
+    [Parameter]
+
+    public string MessageAdd { get; set; }
+
+    private IEnumerable<USER> persons;
+    private bool fulfil = false;
+    
+    protected override async Task OnParametersSetAsync() =>
+        persons = await Http.GetFromJsonAsync<USER[]>
+            ("http://localhost:5245/ueue");
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("pls3");
+        persons = await Http.GetFromJsonAsync<IEnumerable<USER>>
+            ("http://localhost:5245/ueue");
+        Console.WriteLine("pls4");
+        fulfil = true;
+        Console.WriteLine("pls5");
+    }
+
+}

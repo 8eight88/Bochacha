@@ -1,0 +1,18 @@
+﻿
+@using System.Net.Http
+@inject HttpClient Http
+@using System.Net.Http.Json
+@using System.Threading.Tasks
+@using Bochacha.Domain
+
+<ListUsersComponent MessageAdd=@Message />
+
+
+@code {
+    string Message { get; set; } = "";
+
+    void ToMessage(string message1)
+    {
+        Message = message1;
+    }
+}

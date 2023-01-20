@@ -1,0 +1,32 @@
+﻿@page "/adousero"
+<h3>Adousero</h3>
+
+@using System.Net.Http
+@inject HttpClient Http
+@using System.Net.Http.Json
+@using System.Threading.Tasks
+@using Bochacha.Domain
+
+<h3>Добавление нового пользователя</h3>
+
+<input @bind="newName" placeholder="Имя пользователя" />
+<button @onclick="AddPerson">Добавить нового пользователя</button>
+
+@code {
+    private Guid newName;
+
+    [Parameter]
+    public EventCallback<string> OnAddPerson { get; set; }
+
+    private async Task AddPerson()
+    {
+        Console.WriteLine("pls23");
+        newName = Guid.NewGuid();
+        Console.WriteLine("pls24");
+        var person = new USER { id = newName };
+        Console.WriteLine("pls26");
+        await Http.PostAsJsonAsync("http://localhost:5245/api/U", person);
+        Console.WriteLine("pls27");
+        await OnAddPerson.InvokeAsync("OK");
+    }
+}

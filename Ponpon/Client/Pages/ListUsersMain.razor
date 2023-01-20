@@ -1,0 +1,52 @@
+﻿@page "/listusersmain"
+@using System.Net.Http
+
+@inject HttpClient Http
+@using System.Net.Http.Json
+@using System.Threading.Tasks
+@using Bochacha.Domain
+
+<body style="background-color:red">
+    <h3>Список пользвателей</h3>
+    <p>@MessageAdd</p>
+
+@if (fulfil && users == null)
+{
+    <p>Пользователи отсутствуют.</p>
+}
+else if (!fulfil && users == null)
+{
+    <p>Идет загрузка...</p>
+}
+
+@if (users != null)
+{
+    <ul>
+        @foreach (var user in users)
+        {
+            <li>@user.id</li>
+        }
+    </ul>
+}
+</body>
+ 
+
+@code {
+    [Parameter]
+    public string? MessageAdd { get; set; }
+
+    private IEnumerable<USER>? users;
+    private bool fulfil = false;
+    protected override async Task OnParametersSetAsync() =>
+        users = await Http.GetFromJsonAsync<USER[]>
+            ("http://localhost:5032/api/listusers");
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("help1");
+        users = await Http.GetFromJsonAsync<IEnumerable<USER>>
+            ("http://localhost:5032/api/listusers");
+        Console.WriteLine("help2");
+        fulfil = true;
+    }
+}
