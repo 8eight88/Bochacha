@@ -4,16 +4,30 @@
 @using System.Net.Http.Json
 @using System.Threading.Tasks
 @using Bochacha.Domain
-<body style="background-color:red">
-    <div class="form-container">
-        <input @bind="newType" placeholder="я" /><p></p>
 
-        <button class="custom-button" @onclick="AddUSER">Добавить п</button>
+
+<body style="background-color:azure">
+    <div class="form-container">
+        <p>Добавить пользователя</p>
+        <input @bind="newType" placeholder="Имя пользователя" />
+
+        <button class="custom-button" style="background-color:lightskyblue" @onclick="AddUSER">Добавить</button><p></p>
+    </div>
+</body>
+
+<body style="background-color:azure">
+    <div class="form-container">
+        <p></p>
+        <p>Удалить пользователя</p>
+        <input @bind="delid" placeholder="ID" size="45"/>
+
+        <button class="custom-button" style="background-color:lightcoral" @onclick="DelUSER">Удалить</button>
     </div>
 </body>
 @code {
     private string? newType;
     private Guid newid;
+    private Guid delid;
 
     [Parameter]
     public EventCallback<string> OnAddUser { get; set; }
@@ -24,12 +38,17 @@
         var user = new USER
             {
                 id = newid,
-                type = newType
+                Type = newType
 
             };
         newid = Guid.NewGuid();
-        newType = "SUS";
-        await Http.PostAsJsonAsync("https://localhost:5032/api/USER", user);
+        newType = "";
+        await Http.PostAsJsonAsync("https://localhost:7143/api/USER", user);
         await OnAddUser.InvokeAsync("OK");
+    }
+    private async Task DelUSER()
+    {
+        Console.WriteLine(delid);
+        await Http.DeleteAsync("https://localhost:7143/api/USER/" + delid);
     }
 }

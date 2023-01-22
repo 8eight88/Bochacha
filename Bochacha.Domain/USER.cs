@@ -9,19 +9,16 @@ namespace Bochacha.Domain
 { 
     public class USER
     {
-        public Guid id
-        {
-            get; set; 
-            //get { return id; }
-            //set { id = value; }
-        }
-        public string type
+        public Guid id { get; set; }
+
+        public string Type { get; set; } = String.Empty;
+        /*
         {
             get;set;
             //get { return type; }
             //set { type = value; }
         }
-
+        */
         //NAvi \__/\\\
 
 

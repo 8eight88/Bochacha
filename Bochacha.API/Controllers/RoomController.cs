@@ -35,10 +35,10 @@ namespace Bochacha.API.Controllers
         {
             //var person = await _context.Persons.FindAsync(id);
             var room = await _roomRepository.GetByIdAsync(id);
-            if (room == null)
-            {
-                return NotFound();
-            }
+            //if (room == null)
+            //{
+                //return NotFound();
+            //}
             return room;
         }
         [HttpPut("{id}")]

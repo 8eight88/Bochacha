@@ -1,0 +1,82 @@
+﻿@page "/buildlist"
+@using System.Net.Http
+
+@inject HttpClient Http
+@using System.Net.Http.Json
+@using System.Threading.Tasks
+@using Bochacha.Domain
+
+<body style="background-color:azure">
+    <h3>Buildings</h3>
+    <p>@MessageAdd</p>
+
+
+    @if (buildings != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Address</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var bui in buildings)
+                {
+                    <tr>
+                        <td>@bui.id</td>
+                        <td>@bui.address</td>
+                        <td>@bui.name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+
+    @if (fulfil && buildings == null)
+    {
+        <p>Здания отсутствуют.</p>
+    }
+    else if (!fulfil && buildings == null)
+    {
+        <p>Идет загрузка...</p>
+    }
+</body>
+
+
+@code {
+    [Parameter]
+    public string? MessageAdd { get; set; }
+    //private IEnumerable<Room?> newRooms;
+
+    private IEnumerable<Building> buildings;
+    private bool fulfil = false;
+    protected override async Task OnParametersSetAsync()
+    {
+        buildings = await Http.GetFromJsonAsync<Building[]>("https://localhost:7143/api/Building");
+        //7143 5143
+        //newRooms = await Http.GetFromJsonAsync<Room[]>("https://localhost:7143/api/Room");
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("helpBui1");
+        buildings = await Http.GetFromJsonAsync<IEnumerable<Building>>
+            ("https://localhost:7143/api/Building");
+        Console.WriteLine("helpBui2");
+
+        //newRooms = await Http.GetFromJsonAsync<IEnumerable<Room>>
+        //    ("https://localhost:7143/api/Room");
+        //Console.WriteLine("helpBui3");
+
+        fulfil = true;
+
+
+    }
+    
+    
+        
+    
+
+}

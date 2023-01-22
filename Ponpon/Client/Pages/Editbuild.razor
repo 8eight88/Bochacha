@@ -1,0 +1,59 @@
+﻿@page "/editbuild"
+@using System.Net.Http
+@inject HttpClient Http
+@using System.Net.Http.Json
+@using System.Threading.Tasks
+@using Bochacha.Domain
+
+
+<body style="background-color:azure">
+    <div class="form-container">
+        <p>Добавить здание</p>
+        <input @bind="newName" placeholder="Название" />
+        <input @bind="newAddress" placeholder="Адрес" />
+        <button class="custom-button" style="background-color:lightskyblue" @onclick="addBuilding">Добавить</button><p></p>
+    </div>
+</body>
+
+<body style="background-color:azure">
+    <div class="form-container">
+        <p></p>
+        <p>Удалить здание</p>
+        <input @bind="delbil" placeholder="ID" size="45" />
+
+        <button class="custom-button" style="background-color:lightcoral" @onclick="DelBuild"><b>Снести</b></button>
+    </div>
+</body>
+@code {
+    private string? newName;
+    private string? newAddress;
+    private Guid newid;
+    private Guid delbil;
+    //private IEnumerable<Room?> newRooms;
+    
+    [Parameter]
+    public EventCallback<string> OnAddBuilding { get; set; }
+
+    private async Task addBuilding()
+    {
+
+        var building = new Building
+            {
+                id = newid,
+                name = newName,
+                address = newAddress,
+                //Rooms = newRooms
+
+            };
+        newid = Guid.NewGuid();
+        newName = "";
+        newAddress = "";
+        await Http.PostAsJsonAsync("https://localhost:7143/api/Building", building);
+        await OnAddBuilding.InvokeAsync("OK");
+    }
+    private async Task DelBuild()
+    {
+        Console.WriteLine(delbil);
+        await Http.DeleteAsync("https://localhost:7143/api/Building/" + delbil);
+    }
+}

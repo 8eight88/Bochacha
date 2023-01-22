@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.1">
@@ -19,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Bochacha.Domain\Bochacha.Domain.csproj" />
     <ProjectReference Include="..\Bochacha.Infrastructure\Bochacha.Infrastructure.csproj" />
+    <ProjectReference Include="..\Ponpon\Client\Ponpon.Client.csproj" />
   </ItemGroup>
 
 </Project>

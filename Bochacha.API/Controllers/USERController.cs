@@ -24,25 +24,25 @@ namespace Bochacha.API.Controllers
             _userRepository = new USERRepository(_context);
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<USER>>> GetUSERi()
+        public async Task<ActionResult<IEnumerable<USER>>> Get()
         {
             //return await _context.Persons.ToListAsync();
             return await _userRepository.GetAllAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<USER>> GetUSER(Guid id)
+        public async Task<ActionResult<USER>> Get(Guid id)
         {
             //var person = await _context.Persons.FindAsync(id);
             var user = await _userRepository.GetByIdAsync(id);
-            if (user == null)
+            /*if (user == null)
             {
                 return NotFound();
-            }
+            }*/
             return user;
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUSER(Guid id, USER user)
+        public async Task<IActionResult> Put(Guid id, USER user)
         {
             if (id != user.id)
             {
@@ -54,13 +54,13 @@ namespace Bochacha.API.Controllers
             return NoContent();
         }
         [HttpPost]
-        public async Task<ActionResult<USER>> PostUSER(USER user)
+        public async Task<ActionResult<USER>> Post(USER user)
         {
             await _userRepository.AddAsync(user);
             return CreatedAtAction("GetUSER", new { id = user.id }, user);
         }
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUSER(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             var user = await _userRepository.GetByIdAsync(id);
             if (user == null)

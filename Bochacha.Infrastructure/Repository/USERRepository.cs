@@ -27,11 +27,13 @@ namespace Bochacha.Infrastructure
         }
         public async Task<List<USER>> GetAllAsync()
         {
-            return await _context.Users.OrderBy(u => u.type).ToListAsync();
+            return await _context.Users.OrderBy(u => u.id).ToListAsync();
+            //в целях теста return new List<USER> { new USER { id = Guid.NewGuid(), type = "Test1" }, new USER { id = Guid.NewGuid(), type = "Test2" } };
         }
         public async Task<USER> GetByIdAsync(Guid id)
         {
             return await _context.Users.Where(u => u.id == id)
+                //.Include(u => u.Type)
                 .Include(u => u.Rooms)
                 .Include(u => u.Requests)
                 .FirstOrDefaultAsync();
@@ -40,7 +42,8 @@ namespace Bochacha.Infrastructure
         public async Task<USER> GetByTypeAsync(string type)
         {
             return await _context.Users
-                .Where(u => u.type == type)
+                .Where(u => u.Type == type)
+                .Include(u => u.id)
                 .Include(u => u.Rooms)
                 .Include(u => u.Requests)
                 .FirstOrDefaultAsync();
@@ -103,8 +106,12 @@ namespace Bochacha.Infrastructure
         public async Task DeleteAsync(Guid id)
         {
             USER user = await _context.Users.FindAsync(id);
-            _context.Remove(user);
-            await _context.SaveChangesAsync();
+            //if (user == null)
+            //{
+                _context.Remove(user);
+                await _context.SaveChangesAsync();
+            //}
+            
         }
 
         public void ChangeTrackerClear()

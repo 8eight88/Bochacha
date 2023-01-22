@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+
 using Ponpon.Client;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);

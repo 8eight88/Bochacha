@@ -24,14 +24,14 @@ namespace Bochacha.API.Controllers
             _buildingRepository = new BuildingRepository(_context);
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Building>>> GetBuildings()
+        public async Task<ActionResult<IEnumerable<Building>>> Get()
         {
             //return await _context.Persons.ToListAsync();
             return await _buildingRepository.GetAllAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Building>> GetBuilding(Guid id)
+        public async Task<ActionResult<Building>> Get(Guid id)
         {
             //var person = await _context.Persons.FindAsync(id);
             var building = await _buildingRepository.GetByIdAsync(id);
@@ -42,7 +42,7 @@ namespace Bochacha.API.Controllers
             return building;
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBuilding(Guid id, Building building)
+        public async Task<IActionResult> Put(Guid id, Building building)
         {
             if (id != building.id)
             {
@@ -54,13 +54,13 @@ namespace Bochacha.API.Controllers
             return NoContent();
         }
         [HttpPost]
-        public async Task<ActionResult<Building>> PostBuilding(Building building)
+        public async Task<ActionResult<Building>> Post(Building building)
         {
             await _buildingRepository.AddAsync(building);
             return CreatedAtAction("GetBuilding", new { id = building.id }, building);
         }
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBuilding(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             var building = await _buildingRepository.GetByIdAsync(id);
             if (building == null)

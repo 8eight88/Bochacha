@@ -1,0 +1,89 @@
+﻿@page "/listequipment"
+<h3>ShowEquipment</h3>
+@using System.Net.Http
+
+@inject HttpClient Http
+@using System.Net.Http.Json
+@using System.Threading.Tasks
+@using Bochacha.Domain
+
+
+<body style="background-color:azure">
+    <div class="form-container">
+        <p></p>
+        <p>Поиск по комнате</p>
+        <input @bind="roomid" placeholder="ID" size="45" />
+        <button class="custom-button" style="background-color:lightcoral" @onclick="ShowEq">Найти</button>
+        <p></p>
+    </div>
+</body>
+<body style="background-color:azure">
+    <h3>Список оборудования</h3>
+    <p>@MessageAdd</p>
+
+
+    @if (rooms != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Тип</th>
+                    <th>Номер комнаты</th>
+                </tr>
+            </thead>
+            <tbody>     
+                    @foreach (var equipm in room.Equipmenti)
+                    {
+
+                            <tr>
+                            <td>@equipm.name</td>
+                            <td>@equipm.type</td>
+                            <td>@room.number</td>
+                            </tr>
+                    }
+            </tbody>
+        </table>
+    }
+
+
+    @if (fulfil && rooms == null)
+    {
+        <p>Пользователи отсутствуют.</p>
+    }
+    else if (!fulfil && rooms == null)
+    {
+        <p>Идет загрузка...</p>
+    }
+</body>
+
+
+@code {
+    private Guid roomid;
+    [Parameter]
+    public string? MessageAdd { get; set; }
+
+    private IEnumerable<Room> rooms;
+    private Room room;
+
+    private bool fulfil = false;
+    protected override async Task OnParametersSetAsync() =>
+        rooms = await Http.GetFromJsonAsync<Room[]>("https://localhost:7143/api/Room");
+    //7143 5143
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("help1");
+        rooms = await Http.GetFromJsonAsync<IEnumerable<Room>>
+            ("https://localhost:7143/api/Room");
+        Console.WriteLine("help2");
+        fulfil = true;
+    }
+    private async Task ShowEq()
+    {
+        Console.WriteLine("help3");
+        room = await Http.GetFromJsonAsync<Room>("https://localhost:7143/api/Room/" + roomid);
+        Console.WriteLine("help4");
+        fulfil = true;
+    }
+
+    }

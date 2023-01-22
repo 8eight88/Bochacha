@@ -1,0 +1,137 @@
+﻿@page "/roomtest"
+@using System.Net.Http
+
+@inject HttpClient Http
+@using System.Net.Http.Json
+@using System.Threading.Tasks
+@using Bochacha.Domain
+
+<body style="background-color:azure">
+    <div class="form-container">
+        <p></p>
+        <p>Поиск по зданию</p>
+        <input @bind="bubu" placeholder="ID" size="45" />
+        <button class="custom-button" style="background-color:lightcoral" @onclick="ShowRoom">Найти</button>
+        <p></p>
+        <p>Поиск по заведующему помещением</p>
+        <input @bind="usser" placeholder="ID" size="45" />
+        <button class="custom-button" style="background-color:lightcoral" @onclick="ShowRoom">Найти</button>
+    </div>
+</body>
+
+<body style="background-color:azure">
+    <br />
+    <h3>Комнаты по зданию</h3>
+    <p>@MessageAdd</p>
+
+
+
+    @if (newRooms != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Number</th>
+                    <th>Type</th>
+                    <th>Capacity</th>
+                    <th>Room ID</th>
+                    <th>Building</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var roo in newRooms)
+                {
+                    @if (bubu == roo.BuId)
+                    {
+                        <tr>
+                        <td>@roo.number</td>
+                        <td>@roo.type</td>
+                        <td>@roo.capacity</td>
+                        <td>@roo.id</td>
+                        <td>@roo.BuId</td>
+                    </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+    <br />
+    <h3>Комнаты по заведующему</h3>
+    @if (newRooms != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Number</th>
+                    <th>Type</th>
+                    <th>Capacity</th>
+                    <th>Room ID</th>
+                    <th>Building</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var roo in newRooms)
+                {
+                    @if (usser == roo.UserId)
+                    {
+                        <tr>
+                            <td>@roo.number</td>
+                            <td>@roo.type</td>
+                            <td>@roo.capacity</td>
+                            <td>@roo.id</td>
+                            <td>@roo.BuId</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+
+    @if (fulfil && newRooms == null)
+    {
+        <p>Комнаты отсутствуют.</p>
+    }
+    else if (!fulfil && newRooms == null)
+    {
+        <p>Идет загрузка...</p>
+    }
+</body>
+
+
+@code {
+    private Guid bubu;
+    private Guid usser;
+    [Parameter]
+    public string? MessageAdd { get; set; }
+    private IEnumerable<Room> newRooms;
+    private bool fulfil = false;
+    protected override async Task OnParametersSetAsync()=>
+    
+        newRooms = await Http.GetFromJsonAsync<Room[]>("https://localhost:7143/api/Room");
+    
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("helpBui1");
+        newRooms = await Http.GetFromJsonAsync<IEnumerable<Room>>
+        ("https://localhost:7143/api/Room");
+        Console.WriteLine("helpBui3");
+
+        fulfil = true;
+
+
+    }
+    private async Task ShowRoom()
+    {
+        Console.WriteLine("helpBui1");
+        newRooms = await Http.GetFromJsonAsync<IEnumerable<Room>>
+        ("https://localhost:7143/api/Room");
+        Console.WriteLine("helpBui3");
+
+        fulfil = true;
+    }
+
+
+
+
+
+}

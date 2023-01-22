@@ -6,9 +6,32 @@
 @using System.Threading.Tasks
 @using Bochacha.Domain
 
-<body style="background-color:red">
+<body style="background-color:azure">
     <h3>Список пользвателей</h3>
     <p>@MessageAdd</p>
+    
+
+@if (users != null)
+{
+    <table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Имя</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in users)
+        {
+            <tr>
+                <td>@user.id</td>
+                <td>@user.Type</td>
+            </tr>
+        }
+    </tbody>
+    </table>
+}
+
 
 @if (fulfil && users == null)
 {
@@ -18,16 +41,6 @@ else if (!fulfil && users == null)
 {
     <p>Идет загрузка...</p>
 }
-
-@if (users != null)
-{
-    <ul>
-        @foreach (var user in users)
-        {
-            <li>@user.id</li>
-        }
-    </ul>
-}
 </body>
  
 
@@ -35,18 +48,18 @@ else if (!fulfil && users == null)
     [Parameter]
     public string? MessageAdd { get; set; }
 
-    private IEnumerable<USER>? users;
+    private IEnumerable<USER> users;
     private bool fulfil = false;
     protected override async Task OnParametersSetAsync() =>
-        users = await Http.GetFromJsonAsync<USER[]>
-            ("http://localhost:5032/api/listusers");
-
+        users = await Http.GetFromJsonAsync<USER[]>("https://localhost:7143/api/USER");
+    //7143 5143
     protected override async Task OnInitializedAsync()
     {
         Console.WriteLine("help1");
         users = await Http.GetFromJsonAsync<IEnumerable<USER>>
-            ("http://localhost:5032/api/listusers");
+            ("https://localhost:7143/api/USER");
         Console.WriteLine("help2");
         fulfil = true;
     }
+
 }

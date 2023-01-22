@@ -1,0 +1,86 @@
+﻿@page "/editrooms"
+@using System.Net.Http
+@inject HttpClient Http
+@using System.Net.Http.Json
+@using System.Threading.Tasks
+@using Bochacha.Domain
+
+
+<body style="background-color:azure">
+    <div class="form-container">
+        <p>Добавить комнату</p>
+        <h1>ID здания</h1>
+        <input @bind="newBUID" placeholder="ID здания" /><p></p>
+        Тип помещения<br />
+        <input @bind="newType" placeholder="Тип помещения"/><p></p>
+        Номер помещения<br/>
+        <input @bind="newNum" placeholder="Номер помещения" /><p></p>
+        Рассчитано на ... мест<br />
+        <input @bind="newCap" placeholder="-" /><p></p>
+        Куратор помещения<br />
+        <input @bind="newMaster" placeholder="Куратор помещения" /><p></p>
+        ID куратора<br />
+        <input @bind="newUID" placeholder="ID куратора" /><p></p>
+        Площадь помещения<br/>
+        <input @bind="newSpace" placeholder="Площадь помещения" /><p></p>
+        Пригодность<br />
+        <input @bind="newCon" placeholder="True/False"/><p></p>
+
+        <button class="custom-button" style="background-color:lightskyblue" @onclick="AddRoom">Добавить</button><p></p>
+    </div>
+</body>
+
+<body style="background-color:azure">
+    <div class="form-container">
+        <p></p>
+        <p>Удалить комнату</p>
+        <input @bind="delid" placeholder="ID" size="45" />
+
+        <button class="custom-button" style="background-color:lightcoral" @onclick="DelUSER">Удалить</button>
+    </div>
+</body>
+@code {
+    private string? newType;
+    private Guid newid;
+    private Guid delid;
+    private int newNum;
+    private int newCap;
+    private string? newMaster;
+    private double newSpace;
+    private bool newCon;
+    private Guid newUID;
+    private Guid newBUID;
+
+    [Parameter]
+    public EventCallback<string> OnAddRoom { get; set; }
+
+    private async Task AddRoom()
+    {
+
+        var room = new Room
+            {
+                id = Guid.NewGuid(),
+                type = newType,
+                number = newNum,
+                capacity = newCap,
+                curator = newMaster,
+                cur_ass_date = DateTime.Now,
+                mod_date = DateTime.Now,
+                space = newSpace,
+                sat_con = newCon,
+                UserId = newUID,
+                BuId = newBUID
+               
+
+            };
+        newid = Guid.NewGuid();
+        newType = "";
+        await Http.PostAsJsonAsync("https://localhost:7143/api/Room", room);
+        await OnAddRoom.InvokeAsync("OK");
+    }
+    private async Task DelUSER()
+    {
+        Console.WriteLine(delid);
+        await Http.DeleteAsync("https://localhost:7143/api/Room/" + delid);
+    }
+}
